@@ -1,4 +1,8 @@
-//using the debug module
+
+//Using mongoose
+const mongoose = require('mongoose')
+
+/* //using the debug module
 const startupDebugger = require('debug')('app:startup')
 const dbDebugger = require('debug')('app:db')
 
@@ -12,15 +16,21 @@ const helmet = require('helmet')
 //custom middleware
 const logger = require('./middleware/logger')
 const auth = require('./middleware/auth')
+ */
 
 //load our routes
 const genres = require('./routes/genres')
-const home = require('./routes/home')
+//const home = require('./routes/home')
 
 const express = require('express')
 const app = express()
 
-//Using templating Engine and Setting it up
+//connect to mongoose DB
+mongoose.connect('mongodb://127.0.0.1:27017/vidly')
+  .then(() => console.log('Connected to mongoDB ..... '))
+  .catch((err) => console.log('Could not connect this time ....', err))
+
+/* //Using templating Engine and Setting it up
 app.set('view engine', 'pug')
 //Optional Setting for setting a default path
 app.set('views', './views')
@@ -31,27 +41,28 @@ app.set('views', './views')
 console.log(`Node_Env: ${process.env.NODE_ENV}`)
 
 //or we could use 
-console.log(`app: ${app.get('env')}`)
+console.log(`app: ${app.get('env')}`) */
 
 //Below are three default express middleware 
 app.use(express.json())
+/* 
 app.use(express.urlencoded({extended: true}))
-app.use(express.static('public'))
+app.use(express.static('public')) */
 
 //use our route
 app.use('/api/genres', genres)
-app.use('/', home)
+/* app.use('/', home)
 
 //third party middleware
-app.use(helmet())
+app.use(helmet()) */
 
 //Configurations
-console.log(`Application Name: ${config.get('name')}`)
+/* console.log(`Application Name: ${config.get('name')}`)
 console.log(`Mail Server: ${config.get('mail.host')}`)
-console.log(`Password: ${config.get('mail.password')}`)
+console.log(`Password: ${config.get('mail.password')}`) */
 
 //using morgan only in development enviroment
-if(app.get('env') === 'development'){
+/* if(app.get('env') === 'development'){
   app.use(morgan('tiny'))
   //using debuger in place of console.log
   startupDebugger('Enabled Morgan....')
@@ -64,7 +75,7 @@ dbDebugger('connected to the DB')
 app.use(logger)
 
 //creating a custom Authenticating midleware function
-app.use(auth)
+app.use(auth) */
 
 
 const port = process.env.PORT || 3000
